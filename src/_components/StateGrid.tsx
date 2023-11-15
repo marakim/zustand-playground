@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import {useGridState} from "~/_state/gridState";
+import { useGridStore } from "~/_state/gridState";
 
 export interface StateGridProps {
     rows: number;
@@ -10,7 +10,7 @@ export function StateGrid({rows, cols}: StateGridProps) {
     const rowArray = Array.from(Array(rows).keys())
     const colArray = Array.from(Array(cols).keys())
 
-    const {initRow, initCol} = useGridState(
+    const {initRow, initCol} = useGridStore(
         ({initRow, initCol}) => ({initRow, initCol})
     )
 
@@ -45,7 +45,7 @@ export interface AtomGridRowLabelProps {
 }
 
 export function AtomGridRowLabel({row}: AtomGridRowLabelProps) {
-    const {rowVal, incrementRow} = useGridState(
+    const {rowVal, incrementRow} = useGridStore(
         (state) => ({
             rowVal: state.row.get(row),
             incrementRow: state.incrementRow
@@ -65,7 +65,7 @@ export interface AtomGridColLabelProps {
 }
 
 export function AtomGridColLabel({col}: AtomGridColLabelProps) {
-    const {colVal, incrementCol} = useGridState(
+    const {colVal, incrementCol} = useGridStore(
         (state) => ({
         colVal: state.col.get(col),
         incrementCol: state.incrementCol
@@ -87,7 +87,7 @@ export interface AtomGridCellProps {
 }
 
 export function AtomGridCell({row, col}: AtomGridCellProps) {
-    const {rowVal, colVal} = useGridState(
+    const {rowVal, colVal} = useGridStore(
         (state) => ({
             rowVal: state.row.get(row) ?? 0,
             colVal: state.col.get(col) ?? 0,

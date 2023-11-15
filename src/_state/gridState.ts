@@ -38,6 +38,6 @@ const gridStore = create<GridState & GridAction>((set) => ({
     },
 }))
 
-export function useGridState<U>(selector: (state: GridState & GridAction) => U) {
+export function useGridStore<U>(selector: (state: GridState & GridAction) => U) {
     return gridStore(useShallow(selector))
 }
