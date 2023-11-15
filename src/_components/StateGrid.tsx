@@ -19,20 +19,20 @@ export function StateGrid({rows, cols}: StateGridProps) {
         colArray.forEach(initCol)
     }, [rowArray, colArray, initRow, initCol])
 
-    console.log(`render AtomGrid(${rows}, ${cols})`)
+    console.log(`render StateGrid(${rows}, ${cols})`)
     return <div className="flex flex-col gap-2 text-xl text-right">
         <div className="flex flex-row gap-2">
             <div className="basis-0 grow" />
             {
-                colArray.map(col => <AtomGridColLabel key={col} col={col} />)
+                colArray.map(col => <StateGridColLabel key={col} col={col} />)
             }
         </div>
         {
             rowArray.map(row =>
                 <div key={row} className="flex flex-row gap-2">
-                    <AtomGridRowLabel row={row} />
+                    <StateGridRowLabel row={row} />
                     {
-                        colArray.map(col => <AtomGridCell key={col} row={row} col={col}/>)
+                        colArray.map(col => <StateGridCell key={col} row={row} col={col}/>)
                     }
                 </div>
                 )
@@ -40,11 +40,11 @@ export function StateGrid({rows, cols}: StateGridProps) {
     </div>
 }
 
-export interface AtomGridRowLabelProps {
+export interface StateGridRowLabelProps {
     row: number;
 }
 
-export function AtomGridRowLabel({row}: AtomGridRowLabelProps) {
+export function StateGridRowLabel({row}: StateGridRowLabelProps) {
     const {rowVal, incrementRow} = useGridStore(
         (state) => ({
             rowVal: state.row.get(row),
@@ -52,7 +52,7 @@ export function AtomGridRowLabel({row}: AtomGridRowLabelProps) {
         })
     )
 
-    console.log(`render AtomGridRowLabel(${row})`)
+    console.log(`render StateGridRowLabel(${row})`)
     return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => incrementRow(row)}>
         {
             rowVal
@@ -60,11 +60,11 @@ export function AtomGridRowLabel({row}: AtomGridRowLabelProps) {
     </button>
 }
 
-export interface AtomGridColLabelProps {
+export interface StateGridColLabelProps {
     col: number;
 }
 
-export function AtomGridColLabel({col}: AtomGridColLabelProps) {
+export function StateGridColLabel({col}: StateGridColLabelProps) {
     const {colVal, incrementCol} = useGridStore(
         (state) => ({
         colVal: state.col.get(col),
@@ -72,7 +72,7 @@ export function AtomGridColLabel({col}: AtomGridColLabelProps) {
         })
     )
 
-    console.log(`render AtomGridColLabel(${col})`)
+    console.log(`render StateGridColLabel(${col})`)
     return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => incrementCol(col)}>
         {
             colVal
@@ -81,12 +81,12 @@ export function AtomGridColLabel({col}: AtomGridColLabelProps) {
 }
 
 
-export interface AtomGridCellProps {
+export interface StateGridCellProps {
     row: number;
     col: number;
 }
 
-export function AtomGridCell({row, col}: AtomGridCellProps) {
+export function StateGridCell({row, col}: StateGridCellProps) {
     const {rowVal, colVal} = useGridStore(
         (state) => ({
             rowVal: state.row.get(row) ?? 0,
@@ -94,7 +94,7 @@ export function AtomGridCell({row, col}: AtomGridCellProps) {
         })
     )
 
-    console.log(`render AtomGridCell(${row}, ${col})`)
+    console.log(`render StateGridCell(${row}, ${col})`)
     return <div className="basis-0 grow">
         {
             rowVal + colVal
