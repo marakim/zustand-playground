@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 
 export interface GridState {
     row: Map<number,number>,
@@ -12,7 +13,7 @@ export interface GridAction {
     incrementCol: (idx: number) => void,
 }
 
-export const useGridState = create<GridState & GridAction>((set) => ({
+const gridStore = create<GridState & GridAction>((set) => ({
     row: new Map(),
     col: new Map(),
     initRow: (idx: number) => {
@@ -36,3 +37,7 @@ export const useGridState = create<GridState & GridAction>((set) => ({
         }))
     },
 }))
+
+export function useGridState<U>(selector: (state: GridState & GridAction) => U) {
+    return gridStore(useShallow(selector))
+}

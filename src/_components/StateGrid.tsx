@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useShallow } from "zustand/react/shallow";
 import {useGridState} from "~/_state/gridState";
 
 export interface StateGridProps {
@@ -11,9 +10,9 @@ export function StateGrid({rows, cols}: StateGridProps) {
     const rowArray = Array.from(Array(rows).keys())
     const colArray = Array.from(Array(cols).keys())
 
-    const {initRow, initCol} = useGridState(useShallow(
+    const {initRow, initCol} = useGridState(
         ({initRow, initCol}) => ({initRow, initCol})
-    ))
+    )
 
     useEffect(() => {
         rowArray.forEach(initRow)
@@ -46,12 +45,12 @@ export interface AtomGridRowLabelProps {
 }
 
 export function AtomGridRowLabel({row}: AtomGridRowLabelProps) {
-    const {rowVal, incrementRow} = useGridState(useShallow(
+    const {rowVal, incrementRow} = useGridState(
         (state) => ({
             rowVal: state.row.get(row),
             incrementRow: state.incrementRow
         })
-    ))
+    )
 
     console.log(`render AtomGridRowLabel(${row})`)
     return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => incrementRow(row)}>
@@ -66,12 +65,12 @@ export interface AtomGridColLabelProps {
 }
 
 export function AtomGridColLabel({col}: AtomGridColLabelProps) {
-    const {colVal, incrementCol} = useGridState(useShallow(
+    const {colVal, incrementCol} = useGridState(
         (state) => ({
         colVal: state.col.get(col),
         incrementCol: state.incrementCol
         })
-    ))
+    )
 
     console.log(`render AtomGridColLabel(${col})`)
     return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => incrementCol(col)}>
@@ -88,12 +87,12 @@ export interface AtomGridCellProps {
 }
 
 export function AtomGridCell({row, col}: AtomGridCellProps) {
-    const {rowVal, colVal} = useGridState(useShallow(
+    const {rowVal, colVal} = useGridState(
         (state) => ({
             rowVal: state.row.get(row) ?? 0,
             colVal: state.col.get(col) ?? 0,
         })
-    ))
+    )
 
     console.log(`render AtomGridCell(${row}, ${col})`)
     return <div className="basis-0 grow">
