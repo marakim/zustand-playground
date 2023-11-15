@@ -1,3 +1,3 @@
-# Jotai Playground
+# Zustand Playground
 
-Playground for experimenting with the Jotai state management library
+Playground for experimenting with the Zustand state management library

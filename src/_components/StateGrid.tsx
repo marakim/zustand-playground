@@ -1,14 +1,24 @@
-import { useAtom, useAtomValue } from "jotai";
-import { colAtom, rowAtom } from "~/_atoms/gridAtom";
+import { useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
+import {useGridState} from "~/_state/gridState";
 
-export interface AtomGridProps {
+export interface StateGridProps {
     rows: number;
     cols: number;
 }
 
-export function AtomGrid({rows, cols}: AtomGridProps) {
-    const rowArray = Array.from(Array(rows).keys()).map(x => x+1)
-    const colArray = Array.from(Array(cols).keys()).map(x => x+1)
+export function StateGrid({rows, cols}: StateGridProps) {
+    const rowArray = Array.from(Array(rows).keys())
+    const colArray = Array.from(Array(cols).keys())
+
+    const {initRow, initCol} = useGridState(useShallow(
+        ({initRow, initCol}) => ({initRow, initCol})
+    ))
+
+    useEffect(() => {
+        rowArray.forEach(initRow)
+        colArray.forEach(initCol)
+    }, [rowArray, colArray, initRow, initCol])
 
     console.log(`render AtomGrid(${rows}, ${cols})`)
     return <div className="flex flex-col gap-2 text-xl text-right">
@@ -36,10 +46,15 @@ export interface AtomGridRowLabelProps {
 }
 
 export function AtomGridRowLabel({row}: AtomGridRowLabelProps) {
-    const [rowVal, setRowVal] = useAtom(rowAtom(row))
+    const {rowVal, incrementRow} = useGridState(useShallow(
+        (state) => ({
+            rowVal: state.row.get(row),
+            incrementRow: state.incrementRow
+        })
+    ))
 
     console.log(`render AtomGridRowLabel(${row})`)
-    return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => setRowVal((state) => state + 10)}>
+    return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => incrementRow(row)}>
         {
             rowVal
         }
@@ -51,10 +66,15 @@ export interface AtomGridColLabelProps {
 }
 
 export function AtomGridColLabel({col}: AtomGridColLabelProps) {
-    const [colVal, setColVal] = useAtom(colAtom(col))
+    const {colVal, incrementCol} = useGridState(useShallow(
+        (state) => ({
+        colVal: state.col.get(col),
+        incrementCol: state.incrementCol
+        })
+    ))
 
     console.log(`render AtomGridColLabel(${col})`)
-    return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => setColVal((state) => state + 1)}>
+    return <button className="basis-0 grow font-bold cursor-pointer hover:bg-gray-300" onClick={() => incrementCol(col)}>
         {
             colVal
         }
@@ -68,8 +88,12 @@ export interface AtomGridCellProps {
 }
 
 export function AtomGridCell({row, col}: AtomGridCellProps) {
-    const rowVal = useAtomValue(rowAtom(row))
-    const colVal = useAtomValue(colAtom(col))
+    const {rowVal, colVal} = useGridState(useShallow(
+        (state) => ({
+            rowVal: state.row.get(row) ?? 0,
+            colVal: state.col.get(col) ?? 0,
+        })
+    ))
 
     console.log(`render AtomGridCell(${row}, ${col})`)
     return <div className="basis-0 grow">
